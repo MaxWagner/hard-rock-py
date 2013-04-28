@@ -2,6 +2,7 @@
 
 import socket
 import json
+import sys
 
 class client:
     HOST = '192.168.0.107'
@@ -55,10 +56,12 @@ class player(client):
         except AttributeError:
             print("WARN: unhandled message {}".format(message))
 
-    def action(self, type, player): pass
-
     def do(self, action):
         self.send({"message":"action", "type":action})
+
+    # messages
+
+    def action(self, type, player): pass
 
     def gamestate(self, time, cars, missiles, mines):
         self.time = time
@@ -70,8 +73,8 @@ class player(client):
     def tick(self): pass
 
 class kha(player):
-    def __init__(self):
-        super().__init__("kha")
+    def __init__(self, suffix):
+        super().__init__("kha" + suffix)
 
     def connect(self):
         super().connect("Cyberhawk", "Marauder")
@@ -79,4 +82,4 @@ class kha(player):
     def tick(self):
         self.do("accelerate")
 
-(kha()).connect()
+kha(sys.argv[1] if len(sys.argv) > 1 else "").connect()
