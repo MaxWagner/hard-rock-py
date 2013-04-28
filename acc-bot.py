@@ -3,7 +3,7 @@
 import hardrock
 import sys
 
-class acc(hardrock.player):
+class AccBot(hardrock.Player):
     def __init__(self, suffix):
         super().__init__("acc" + suffix)
 
@@ -13,4 +13,4 @@ class acc(hardrock.player):
     def tick(self):
         self.do("accelerate")
 
-acc(sys.argv[1] if len(sys.argv) > 1 else "").connect()
+AccBot(sys.argv[1] if len(sys.argv) > 1 else "").connect()

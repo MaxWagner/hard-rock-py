@@ -2,7 +2,7 @@ import socket
 import json
 import sys
 
-class client:
+class Client:
     HOST = '192.168.0.107'
     PORT = 1993
     BUF_SIZE = 100
@@ -12,7 +12,7 @@ class client:
 
     def connect(self, handshake):
         self._s = socket.socket()
-        self._s.connect((client.HOST, client.PORT))
+        self._s.connect((Client.HOST, Client.PORT))
         self.send(handshake)
         assert(self.recv()['status'] == True)
 
@@ -22,7 +22,7 @@ class client:
 
     def recv(self):
         while not "\n" in self._received:
-            received = self._s.recv(client.BUF_SIZE).decode('utf-8')
+            received = self._s.recv(Client.BUF_SIZE).decode('utf-8')
             if received == "":
                 raise Exception('Server shut down')
             self._received += received
@@ -30,11 +30,11 @@ class client:
         [obj, self._received] = self._received.split("\n", 1)
         return json.loads(obj)
 
-class observer(client):
+class Observer(Client):
     def connect(self):
         super().connect({"message":"connect", "type":"observer"})
 
-class player(client):
+class Player(Client):
     def __init__(self, name):
         super().__init__()
         self._name = name
