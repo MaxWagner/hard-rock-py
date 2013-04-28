@@ -23,7 +23,11 @@ class client:
 
     def recv(self):
         while not "\n" in self._received:
-            self._received += self._s.recv(client.BUF_SIZE).decode('utf-8')
+            received = self._s.recv(client.BUF_SIZE).decode('utf-8')
+            if received == "":
+                raise Exception('Server shut down')
+            self._received += received
+
         [obj, self._received] = self._received.split("\n", 1)
         return json.loads(obj)
 
