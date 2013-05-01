@@ -34,6 +34,14 @@ class Observer(Client):
     def connect(self):
         super().connect({"message":"connect", "type":"observer"})
 
+class Track:
+    def __init__(self, msg):
+        assert(msg['message'] == "track")
+        self.width = msg['width']
+        self.height = msg['height']
+        self.startdir = msg['startdir']
+        self.data = [[msg['data'][x + self.width * y] for x in range(self.width)] for y in range(self.height)]
+
 class Player(Client):
     def __init__(self, name):
         super().__init__()
@@ -58,6 +66,11 @@ class Player(Client):
         self.send({"message":"action", "type":action})
 
     # messages
+
+    def gamestart(self, players, laps, track):
+        self.players = players
+        self.laps = laps
+        self.track = Track(track)
 
     def action(self, type, player): pass
 
