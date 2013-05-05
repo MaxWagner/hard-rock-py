@@ -3,7 +3,7 @@ import json
 import sys
 
 class Client:
-    HOST = '192.168.0.107'
+    HOST = 'localhost'
     PORT = 1993
     BUF_SIZE = 100
 
@@ -37,10 +37,10 @@ class Observer(Client):
 class Track:
     def __init__(self, msg):
         assert(msg['message'] == "track")
-        self.width = msg['width']
-        self.height = msg['height']
-        self.startdir = msg['startdir']
-        self.data = [[msg['data'][x + self.width * y] for x in range(self.width)] for y in range(self.height)]
+        #self.width = msg['width']  # dirty hack to avoid having to wait 20 seconds for map data to be transmitted. Merge away when the hard-rock-py has tile support.
+        #self.height = msg['height']
+        #self.startdir = msg['startdir']
+        #self.data = [[msg['data'][x + self.width * y] for x in range(self.width)] for y in range(self.height)]
 
 class Player(Client):
     def __init__(self, name):
@@ -48,7 +48,7 @@ class Player(Client):
         self._name = name
 
     def connect(self, character, cartype):
-        super().connect({"message":"connect", "type":"player", "name":self._name, "character":character, "cartype":cartype, "tracktiled":False})
+        super().connect({"message":"connect", "type":"player", "name":self._name, "character":character, "cartype":cartype, "tracktiled":True})
         while True:
             self.dispatch()
 
