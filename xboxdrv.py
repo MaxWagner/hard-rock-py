@@ -12,7 +12,9 @@ RIGHT = "turnright"
 ACCEL = "accelerate"
 BREAK = "stopaccelerate"
 STRAIGHT = "stopturning"
-
+MISSILE = "missile"
+BOOST = "boost"
+MINE = "mine"
 
 def init():
     pygame.init()
@@ -36,6 +38,12 @@ def events():
                     yield LEFT
                 elif event.key == 275:  # right
                     yield RIGHT
+                elif event.key == 306: # ctrl -- mine
+                    yield MINE
+                elif event.key == 308: # alt -- missile
+                    yield MISSILE
+                elif event.key == 32: # space -- boost
+                    yield BOOST
             elif event.type == KEYUP:
                 if event.key == 273:  # accelerate
                     yield BREAK
@@ -52,12 +60,16 @@ def events():
                     elif -0.2 < event.value < 0.2:
                         yield STRAIGHT
             elif event.type == JOYBUTTONDOWN:
-                if event.button == 0:  # accelerate
+                if event.button == 0:  # mine
+                    yield MINE
+                elif event.button == 1:  # accelerate
                     yield ACCEL
-                elif event.button == 1:  # break
-                    yield BREAK
+                elif event.button == 2:  # boost
+                    yield BOOST
+                elif event.button == 3:  # missile
+                    yield MISSILE
             elif event.type == JOYBUTTONUP:
-                if event.button == 0:  # accelerate
+                if event.button == 1:  # accelerate
                     yield BREAK
 
 if __name__ == "__main__":
